@@ -40,6 +40,8 @@ import com.waz.zclient.core.controllers.tracking.events.filetransfer.Successfull
 import com.waz.zclient.core.controllers.tracking.events.media.CompletedMediaActionEvent;
 import com.waz.zclient.core.controllers.tracking.events.media.SentPictureEvent;
 import com.waz.zclient.core.controllers.tracking.events.notifications.NotificationInformationEvent;
+import com.waz.zclient.core.controllers.tracking.events.notifications.WebSocketConnectionLostEvent;
+import com.waz.zclient.core.controllers.tracking.events.notifications.WebSocketConnectionLostOnPingEvent;
 import com.waz.zclient.core.controllers.tracking.events.onboarding.GeneratedUsernameEvent;
 import org.threeten.bp.Duration;
 import timber.log.Timber;
@@ -136,6 +138,12 @@ public class AppTrackingEventsHandler implements TrackingEventsHandler {
                 break;
             case ASSET_DOWNLOAD_FAILED:
                 trackingController.tagEvent(new FailedFileDownloadEvent(assetMimeType));
+                break;
+            case WEB_SOCKET_CONNECTION_LOST:
+                trackingController.tagEvent(new WebSocketConnectionLostEvent(trackingEvent.getDuration().getOrElse(Duration.ZERO)));
+                break;
+            case WEB_SOCKET_CONNECTION_LOST_ON_PING:
+                trackingController.tagEvent(new WebSocketConnectionLostOnPingEvent(trackingEvent.getDuration().getOrElse(Duration.ZERO)));
                 break;
         }
 
