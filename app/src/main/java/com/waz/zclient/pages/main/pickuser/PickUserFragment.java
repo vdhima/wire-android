@@ -89,6 +89,8 @@ import com.waz.zclient.utils.ViewUtils;
 import com.waz.zclient.utils.device.DeviceDetector;
 import com.waz.zclient.views.DefaultPageTransitionAnimation;
 import com.waz.zclient.views.LoadingIndicatorView;
+import com.waz.zclient.views.PickableElement;
+
 import hugo.weaving.DebugLog;
 
 import java.util.ArrayList;
@@ -145,6 +147,16 @@ public class PickUserFragment extends BaseFragment<PickUserFragment.Container> i
     private static final boolean SHOW_INVITE = true;
 
     final public SearchBoxView.Callback searchBoxViewCallback = new SearchBoxView.Callback() {
+
+        @Override
+        public void onRemovedTokenSpan(PickableElement element) {
+            User user = getStoreFactory().getPickUserStore().getUser(element.id());
+            getControllerFactory().getPickUserController().removeUser(user);
+            if (isAddingToConversation()) {
+                setConversationQuickMenuVisible(false);
+            }
+        }
+
         @Override
         public void onKeyboardDoneAction() {
             getControllerFactory().getPickUserController().notifyKeyboardDoneAction();
@@ -158,14 +170,6 @@ public class PickUserFragment extends BaseFragment<PickUserFragment.Container> i
         @Override
         public void onClearButton() {
             closeStartUI();
-        }
-
-        @Override
-        public void onRemovedTokenSpan(User user) {
-            getControllerFactory().getPickUserController().removeUser(user);
-            if (isAddingToConversation()) {
-                setConversationQuickMenuVisible(false);
-            }
         }
 
         @Override
