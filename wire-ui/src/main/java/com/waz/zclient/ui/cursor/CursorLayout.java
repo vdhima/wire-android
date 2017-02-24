@@ -24,6 +24,7 @@ import android.content.Context;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Handler;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.content.res.ResourcesCompat;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -46,6 +47,7 @@ import com.waz.zclient.core.api.scala.ModelObserver;
 import com.waz.zclient.ui.R;
 import com.waz.zclient.ui.animation.interpolators.penner.Expo;
 import com.waz.zclient.ui.animation.interpolators.penner.Quart;
+import com.waz.zclient.ui.theme.ThemeUtils;
 import com.waz.zclient.ui.utils.ColorUtils;
 import com.waz.zclient.ui.utils.CursorUtils;
 import com.waz.zclient.ui.utils.ResourceUtils;
@@ -679,6 +681,8 @@ public class CursorLayout extends FrameLayout implements
         newCursorEditText.setTextColor(ContextCompat.getColor(getContext(), R.color.text__primary_light));
         dividerView.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.separator_light));
 
+        emojiButton.setTextColor(ResourcesCompat.getColorStateList(getResources(), R.color.wire__text_color_primary_light_selector, null));
+
         showEditMessageToolbar();
     }
 
@@ -711,6 +715,12 @@ public class CursorLayout extends FrameLayout implements
         if (cursorCallback != null) {
             cursorCallback.onClosedMessageEditing();
         }
+
+        emojiButton.setTextColor(
+            ThemeUtils.isDarkTheme(getContext()) ?
+                ResourcesCompat.getColorStateList(getResources(), R.color.wire__text_color_primary_dark_selector, null) :
+                ResourcesCompat.getColorStateList(getResources(), R.color.wire__text_color_primary_light_selector, null));
+
         resetEphemeralButton();
     }
 
